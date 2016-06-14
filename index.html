@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Yelp Dataset Challenge 2016 Report</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Yelp Dataset Challenge 2016 Report">
+  <meta name="author" content="Zarmeen Nasim">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Yelp Dataset Challenge 2016 Report</h1>
+    <h2>Review Text Analysis</h2>
+    <p>Zarmeen Nasim<br/> Supervised By Dr.Sajjad Haider <br/>Institute of Business Administation(IBA) ,Karachi,Pakistan
+    
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>In this report we have presented our analysis performed on review text provided by Yelp for Dataset Challenge 2016.We took the challenge to :</p>
+
+<ol>
+<li>Predict Star Rating from review text alone</li>
+<li>Extract aspects from review through topic modeling</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue dark current" id="slide-2" style="background:;">
+  <article data-timings="">
+    <p><hgroup>
+  <h2> Review Star Rating Prediction </h2>
+</hgroup></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>1. Predict Star Rating from review text alone</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Business are often interested in the useful feedback provided by their valuable customers in       order to improve their services.Reading and evaluating each review on Yelp website is a             herculian task.Our star rating prediction model addresses this issue by predicting the star         rating (1-5) from the review text only.</p>
+
+<p>Workflow is described as follows:</p>
+
+<ol>
+<li>Data Description</li>
+<li>Data Cleaning</li>
+<li>Data visualization</li>
+<li>Data Partition </li>
+<li>Feature Extraction</li>
+<li>Modeling</li>
+<li>Evaluation</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>1.1 Data Description</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Review data was provided in json format.</p>
+
+<div style = "float:left">
+<pre>
+{
+    'type': 'review',
+    'business_id': (encrypted business id),
+    'user_id': (encrypted user id),
+    'stars': (star rating, rounded to half-stars),
+    'text': (review text),
+    'date': (date, formatted like '2012-03-14'),
+    'votes': {(vote type): (count)},
+}
+
+</pre>
+</div>
+
+<div style = "float:right">
+<img src = 'assets/img/starratingPrediction/data distribution.PNG'
+style = "border:1px solid rgba(136, 136, 136, 0.46);" />
+
+<p style="font-size:14px;text-align: center;"> Fig 1.1 : Star rating distribution </p>
+</div>
+
+<p style = "clear : both">
+There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 11,12,332 reviews.
+Figure 1.1 shows star rating distribution in the subset of review dataset.
+</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-5" style="background:;">
+  <hgroup>
+    <h2>1.2 Data Cleaning</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>For data cleaning,following steps were performed:</p>
+
+<ol>
+<li>Removed stop words provided by nltk Stopword list, except following words  [&#39;most&#39;,&#39;not&#39;,&#39;very&#39;,&#39;few&#39;,&#39;more&#39;,&#39;only&#39;,&#39;nor&#39;,&#39;too&#39;,&#39;but&#39;]</li>
+<li>Removal of non alphanumeric characters</li>
+<li>Lower case conversion</li>
+<li>Stemming not applied as <b style="color:red">&#39;awesome&#39;</b> and <b style="color:red">&#39;awesomeeeee&#39;</b> may have different ratings</li>
+<li>Removal of words having word length &lt;=2 </li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-6" style="background:;">
+  <hgroup>
+    <h2>1.3 Data Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We first try to visualize the the difference between 5-star reviews and 1-star reviews by plotting their word clouds.</p>
+
+<div style="text-align:center">
+<img src = 'assets/img/wordclouds/star5_small.PNG'  />
+<img src = 'assets/img/wordclouds/star1_small.PNG' />
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.2 : Thumbs up vs. Thumbs down reviews </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-7" style="background:;">
+  <hgroup>
+    <h2>1.4 Data Partition</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>After data visualization,the next step was to partition our dataset into training and testing dataset.
+Our split ratio was 0.7
+<center></p>
+
+<table style="width:auto">
+  <tbody>
+  <tr style="background:None;">
+    <td> Training set </td>
+    <td> 7,78,966 reviews </td>
+  </tr> 
+   <tr style="background:None;">
+    <td> Testing set </td>
+    <td> 3,33,366 reviews </td>
+  </tr> 
+</tbody>  
+</table>
+
+<p></center>
+<br/></p>
+
+<div style="text-align:center">
+<img src = 'assets/img/starratingPrediction/datapartition.PNG' style = "border:1px solid rgba(136, 136, 136, 0.77);"/>
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.3 : Train set and Test set Star rating Distribution</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-8" style="background:;">
+  <hgroup>
+    <h2>1.5 Vector Based Approach For Feature Extraction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We followed vector based approach to extract features from raw text.Word2vec <b style = "color:red">vectorizes</b> about words, and by doing so it makes natural language computer-readable - we can start to perform powerful mathematical operations on words to detect their similarities</p>
+
+<ul>
+<li>Word2vec, published by Google in 2013, is a neural network implementation that learns distributed representations for words.</li>
+<li>Word2vec is an unsupervised learning approach that clusters similar words together.</li>
+<li>In this project,word2vec implementation of <b>genism package </b> is used.
+Word2vec model was trained on training data i.e 7,78,966 reviews
+<center>
+<table style="width:auto">
+<thead>
+<th> Parameter </th>
+<th> Value </th>
+</thead>
+<tbody>
+<tr>
+<td>Features</td>
+<td>500</td>
+</tr>
+<tr>
+<td>Minimum word count</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Workers</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Context</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Downsampling</td>
+<td>1e-3</td>
+</tr>
+</tbody>
+</table>
+</center></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-9" style="background:;">
+  <hgroup>
+    <h2>1.5.1 Word2Vec Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We apply Principal Component Analysis to reduce the dimension to 2 for visualizating the query result of our word2vec model.</p>
+
+<table style="border:1px solid rgba(0, 0, 0, 0.45)">
+  <tbody>
+    <tr style = "background:None;">
+      <td>
+        <img src='assets/img/yelp_word2vec_visuals/awesome.PNG'/>
+      </td>
+       <td>
+       <img src='assets/img/yelp_word2vec_visuals/ambiance.PNG'/>
+      </td>
+      <td>
+      <img src='assets/img/yelp_word2vec_visuals/food.PNG'/>
+      </td>
+    </tr>
+  </tbody>  
+</table>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.4 : Word2Vec Visualization</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-10" style="background:;">
+  <hgroup>
+    <h2>1.5.1 Word2Vec Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We apply Principal Component Analysis to reduce the dimension to 2 for visualizating the query result of our word2vec model.</p>
+
+<table style="border:1px solid rgba(0, 0, 0, 0.45)">
+  <tbody>
+    <tr style = "background:None;">
+      <td>
+        <img src='assets/img/yelp_word2vec_visuals/mexican.PNG'/>
+      </td>
+       <td>
+       <img src='assets/img/yelp_word2vec_visuals/seafood.PNG'/>
+      </td>
+      <td>
+      <img src='assets/img/yelp_word2vec_visuals/service.PNG'/>
+      </td>
+    </tr>
+  </tbody>  
+</table>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.5 : Word2Vec Visualization</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-11" style="background:;">
+  <hgroup>
+    <h2>1.6 Modeling</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Before modeling,the first task was to decide that whether star rating prediction should be treated as a <b style="color:red">MultiClass Classification</b> problem or should we consider it <b style="color:red">Regression </b> problem.</p>
+
+<p>We first train our model using <b style="color:red"> Xgboost Multiclass Classification Algorithm </b> but the results are worse ,moreover the training time was almost double as compared with <b style="color:red"> Xgboost Regression Algorithm </b>.</p>
+
+<p>The reason behind this difference in performance is:</p>
+
+<ul>
+<li><p>Classification algorithms associate same cost to misclassifying 5-star review as 1-star review or   4-star review ,which is not right.</p></li>
+<li><p>In regression,we consider that predicting 5-star review as a 4-star review is less costly rather    than predicting it as a 1-star review.</p></li>
+<li><p>Thus regression algorithms assign different penalty to different mistakes depending upon how far    we are from correct answer.</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-12" style="background:;">
+  <hgroup>
+    <h2>1.6.1 XGBOOST Regression Algorithm</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><a href='https://github.com/dmlc/xgboost/tree/master/python-package'>XGBOOST Python Implementation </a></p>
+
+<p>After training several regressors with different parameter settings,the best so far model trained has the following parameter settings</p>
+
+<p><center></p>
+
+<table style="width:auto">
+<thead>
+  <th> Parameter </th>
+  <th> Value </th>
+</thead>
+<tbody>
+  <tr>
+    <td>eta</td>
+    <td>0.01</td>
+  </tr>
+  <tr>
+    <td>Max depth</td>
+    <td>10</td>
+  </tr>
+  <tr>
+    <td>min-child-weight</td>
+    <td>15</td>
+  </tr>
+  <tr>
+    <td>Subsample</td>
+    <td>0.8</td>
+  </tr>
+   <tr>
+    <td>colsample_bytree</td>
+    <td>0.8</td>
+  </tr>
+   <tr>
+    <td>seed</td>
+    <td>12</td>
+  </tr>
+     <tr>
+    <td>silent</td>
+    <td>False</td>
+  </tr>
+  <tr>
+    <td>objective</td>
+    <td>reg:linear</td>
+  </tr>
+  <tr>
+    <td>num_trees</td>
+    <td>12,000</td>
+  </tr>
+</tbody>
+</table>
+
+<p></center></p>
+
+<p style="font-size:14px;text-align: center;"> Table 1.6.1 : Parameter details of Best so far Model</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-13" style="background:;">
+  <hgroup>
+    <h2>1.7 Evaluation</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Model is evaluated on our test set containing <b> 3,33,366 reviews </b></p>
+
+<p><center></p>
+
+<table style="width:auto">
+<thead>
+  <th></th>
+  <th> MSE </th>
+  <th> RMSE </th>
+  <th> R-Score </th>
+</thead>
+<tbody>
+  <tr>
+    <td>Xgboost Regressor</td>
+    <td>0.5695</td>
+    <td>0.754</td>
+    <td>0.695</td>
+  </tr>
+  <tr>
+    <td>RandomForest Regressor</td>
+    <td>0.867</td>
+    <td>0.931</td>
+    <td>0.536</td>
+  </tr>
+</tbody>
+</table>
+
+<p></center></p>
+
+<h4>Confusion Matrix</h4>
+
+<p>Star rating prediction from our xgboost regression model is rounded off and we compute confusion matrix of our predicted ratings and actual star ratings.</p>
+
+<div style="text-align:center">
+<img src = 'assets/img/starratingPrediction/confusionMatrix.PNG' />
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.6 : Confusion Matrix</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>1.7 Evaluation</h2>
+  </hgroup>
+  <article data-timings="">
+    <h4>Histogram of Error Values</h4>
+
+<p><b style = "color:red">Error = Actual Star Rating - Predicted Star Rating</b></p>
+
+<div style="text-align:center">
+<img src = 'assets/img/starratingPrediction/errorplot.PNG' />
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.7 : Histogram of Error Values  </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-15" style="background:;">
+  <hgroup>
+    <h2>1.7 Evaluation</h2>
+  </hgroup>
+  <article data-timings="">
+    <h4>Comparing Actual Star Rating with Average of Predicted Star Rating</h4>
+
+<p>We then compute average of predicted ratings grouped by their actual star ratings.This helped us in understanding when the model performs well and when it does not.</p>
+
+<div style="text-align:center">
+<img src = 'assets/img/starratingPrediction/actualvspredicted.PNG' />
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 1.8 : Actual vs. Average Predicted Star Ratings</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue dark current" id="slide-16" style="background:;">
+  <article data-timings="">
+    <p><hgroup>
+  <h2> Topic Extraction From Review </h2>
+</hgroup></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-17" style="background:;">
+  <hgroup>
+    <h2>2. Extract aspects from review through topic modeling</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The next task we performed was to extract important aspect from review text.The intent of this      task is twofold</p>
+
+<ul>
+<li><p>Provide aspect level summary of reviews.  </p></li>
+<li><p>Auto tag each review with its aspect so that new customer can search reviews that contain           aspect of interest</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-18" style="background:;">
+  <hgroup>
+    <h2>2.1 Problem Statement</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>It is often observed that reviews are verbose.It requires alot of effort for a site visitor or a business owner to go through a large number of long reviews to extract meaningful aspects and topics contained in a review.For example,consider a following review taken from Yelp Dataset </p>
+
+<div style = "border: 1px solid #ddd;padding: 15px;">
+<p style ="font-size: initial;">
+I arrived around 10 am on a Saturday morning.  I was greeted by the hostess,who was polite and friendly, and I informed her that I was alone.  She had just arrived, as well, and wasn't exactly sure what was going on yet, so she asked (the manager?) where she should seat me.  After receiving guidance, she brought me to a table towards the back.  It had not yet been cleaned after the previous guests had dined.  So, she quickly got it cleared off, grabbed a rag, and wiped it down.
+</p>
+<p style ="font-size: initial;">
+The waitress came rather quickly to take my drink order.  She was extremely friendly.  I ordered coffee and water, which she went and got while I looked over the menu.  She returned, and took my order.  I ordered the Cinnamon Swirl French Toast Special - Three slices of French toast made with Pittsburgh's own Jenny Lee Cinnamon Swirl, two farm-fresh eggs, with bacon or sausage (I chose sausage), and your choice of potato (I went with the cheesy hash brown casserole).  I also added an orange juice.  She went and put my order in, while I waited, and came back with it after not too long.   The eggs were cooked exactly how I wanted them, the cheesy hash brown casserole and the french toast were both delicious.  I also enjoyed the sausage which was pretty typical.
+</p>
+<p style ="font-size: initial;">
+Kings Family Restaurant featured a very friendly staff, great prices, and tasty food.  I am pleased and will definitely come back again.
+</p>
+</div>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-19" style="background:;">
+  <hgroup>
+    <h2>2.2 Solution - Topic Modeling</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>To extract meaningful aspects from a review text, a statistical approach known as <b style="color:red">Topic Modeling </b> is used in this project.</p>
+
+<p>Topic Models assume that a document can be described by a small set of topics/aspects and there is a probability of any word occurring for a given &quot;topic&quot;.</p>
+
+<p>A topic model first learns the topics by clustering words that co-occur and then learn the probabilities defining how much each document belongs to each topic.</p>
+
+<p>In this project,we have used Dato Graph Lab Topic Modeling implementation of LDA (Latent Dirichlet allocation) </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-20" style="background:;">
+  <hgroup>
+    <h2>2.3 Topic Modeling</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>To perform the task of extracting topics from review corpus, following workflow was followed</p>
+
+<ol>
+<li>Text preprocessing</li>
+<li>Data Partition </li>
+<li>Topic model Training</li>
+<li>Topic Prediction </li>
+<li>Topic Visualization</li>
+<li>Further Analysis</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-21" style="background:;">
+  <hgroup>
+    <h2>2.3.1 Text Preprocessing</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>For data cleaning,following steps were performed:</p>
+
+<ol>
+<li>Removed stop words provided by nltk Stopword list.</li>
+<li>Removal of non alphanumeric characters</li>
+<li>Lower case conversion</li>
+<li>Removal of words having word length &lt;=2 </li>
+<li>Tokenization</li>
+</ol>
+
+<h2>2.3.2 Data Partition</h2>
+
+<p>After text preprocessing,review dataset was partitioned into training set and test set.Our split ratio was 0.6.
+<center></p>
+
+<table style="width:auto">
+  <tbody>
+  <tr style="background:None;">
+    <td> Training set </td>
+    <td> 13,35,128 reviews </td>
+  </tr> 
+   <tr style="background:None;">
+    <td> Testing set </td>
+    <td> 8,90,085 reviews </td>
+  </tr> 
+</tbody>  
+</table>
+
+<p></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-22" style="background:;">
+  <hgroup>
+    <h2>2.3.3 Topic Model Training</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>For topic modeling, graphlab implementation of LDA is used.We seed our model with initial list of words associate with cluster/topic labels.</p>
+
+<div style="width:600px;margin:0 auto;">
+<div style="display:inline;float:left;">
+<table style="width:auto" class = "topiclabel" >
+  <thead>
+      <th> Word  </th>
+      <th> Topic </th>
+      <th> Word  </th>
+      <th> Topic </th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>food</td>
+      <td>1</td>
+      <td>staff</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>italian</td>
+      <td>2</td>
+      <td>worker</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>pasta</td>
+      <td>2</td>
+      <td>price</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>pizza</td>
+      <td>2</td>
+      <td>money</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>service</td>
+      <td>3</td>
+      <td>lunch</td>
+      <td>5</td>
+    </tr>
+  
+  </tbody>
+  
+</table>
+<p style="font-size:14px;text-align: center;"> Table 2.1:Seeded Word Association </p>
+</div>
+
+<div style="display:inline;float:right;">
+<table style="width:auto" class = "topiclabel">
+  <thead>
+      <th> Parameter  </th>
+      <th> Value </th>
+      
+  </thead>
+  <tbody>
+    <tr>
+    <td> Number of Topics</td>
+    <td> 50 </td>
+    </tr>
+    <tr>
+    <td> Iterations</td>
+    <td> 5000 </td>
+    </tr>
+    
+    
+  </tbody>
+  
+</table>
+<p style="font-size:14px;text-align: center;"> Table 2.2: Model Parameters </p>
+</div>
+
+<p></div></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-23" style="background:;">
+  <hgroup>
+    <h2>2.3.4 Top 5 Words for 20 Topics</h2>
+  </hgroup>
+  <article data-timings="">
+    <div style="text-align:center">
+<img src = 'assets/img/topicmodelling_images/Topicwords.PNG' style = "border:1px solid rgba(136, 136, 136, 0.77);"/> 
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 2.1: Top 5 words for each Topic </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-24" style="background:;">
+  <hgroup>
+    <h2>2.3.5 Topic Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <table  class ="wcloud">
+  <tbody>
+    <tr style = "background:None;">
+      <td style="text-align:center">
+        <img src='assets/img/wordclouds/topicFood.PNG'/>
+      </td>
+       <td style="text-align:center">
+       <img src='assets/img/wordclouds/topicPlace.PNG'/>
+      </td>
+  </tr>
+  <tr style = "background:None;">
+  <td style="text-align:center">
+  <img src='assets/img/wordclouds/wordcloudmasks/food.PNG' style="display:inline"/>
+  <span>Food </span>
+  </td>
+  <td style="text-align:center">
+  <img src='assets/img/wordclouds/wordcloudmasks/location.PNG' style="display:inline"/>
+  <span>Place </span>
+  </td>
+  </tr>
+  </tbody>  
+</table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-25" style="background:;">
+  <hgroup>
+    <h2>2.3.5 Topic Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <table class="wcloud">
+  <tbody>
+    <tr style = "background:None;">
+      <td style="text-align:center">
+        <img src='assets/img/wordclouds/topicAmbiance.PNG'/>
+      </td>
+       <td style="text-align:center">
+       <img src='assets/img/wordclouds/topicSea.PNG'/>
+      </td>
+  </tr>
+  <tr  >
+  <td style="text-align:center">
+  <img src='assets/img/wordclouds/wordcloudmasks/music.PNG' style="display:inline"/>
+  <span>Ambiance </span>
+  </td>
+  <td style="text-align:center">
+  <img src='assets/img/wordclouds/wordcloudmasks/sea.PNG' style="display:inline"/>
+  <span>Sea Food</span>
+  </td>
+  </tr>
+  </tbody>  
+</table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-26" style="background:;">
+  <hgroup>
+    <h2>2.3.5 Topic Visualization</h2>
+  </hgroup>
+  <article data-timings="">
+    <table class="wcloud">
+  <tbody>
+    <tr style = "background:None;">
+      <td style="text-align:center">
+        <img src='assets/img/wordclouds/topicService.PNG'/>
+      </td>
+       <td style="text-align:center">
+       <img src='assets/img/wordclouds/topicDrink.PNG'/>
+      </td>
+  </tr>
+  <tr  >
+  <td style="text-align:center">
+  <img src='assets/img/wordclouds/wordcloudmasks/service.PNG' style="display:inline"/>
+  <span>Service </span>
+  </td>
+  <td style="text-align:center">
+  <img src='assets/img/wordclouds/wordcloudmasks/drink.PNG' style="display:inline"/>
+  <span>Beverages </span>
+  </td>
+  </tr>
+  </tbody>  
+</table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-27" style="background:;">
+  <hgroup>
+    <h2>2.3.6 Topic Prediction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>After the model is trained,it predicts the topic for each review in a test set.We get 50 clusters/topics of similar words.
+After merging clusters with similar words,We then assign topics labels,a meaningful name based upon the words in that cluster.There were 20 topics after postprocessing model results.
+<b style="color:red">For e.g: [&#39;pizza&#39;,&#39;good&#39;,&#39;cheese&#39;,&#39;sauce&#39;,&#39;italian&#39;] =&gt; &quot;Italian Food&quot;</b></p>
+
+<div style="text-align:center">
+<img src = 'assets/img/topicmodelling_images/review.PNG' style = "border:1px solid rgba(136, 136, 136, 0.77);"/> 
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 2.1: Predicted Topics on a Sample Review </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-28" style="background:;">
+  <hgroup>
+    <h2>2.3.7 Topic Distribution in Overall Reviews</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Out of curiousity,we find out most frequent topics in review dataset.Histogram below shows the distribution of aspects/topics in overall review dataset.</p>
+
+<div style="text-align:center">
+<img src='assets/img/topicmodelling_images/Topic models frequency1.PNG' style = "border:1px solid rgba(136, 136, 136, 0.77);"/> 
+</div>
+
+<p style="font-size:14px;text-align: center;"> Fig 2.2: Topic Frequency in Review Dataset  </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="segue dark current" id="slide-29" style="background:;">
+  <article data-timings="">
+    <p><hgroup>
+  <h2> Thank you </h2>
+</hgroup></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='NA'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='1. Predict Star Rating from review text alone'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='1.1 Data Description'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='1.2 Data Cleaning'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='1.3 Data Visualization'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='1.4 Data Partition'>
+         7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='1.5 Vector Based Approach For Feature Extraction'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='1.5.1 Word2Vec Visualization'>
+         9
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=10 title='1.5.1 Word2Vec Visualization'>
+         10
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=11 title='1.6 Modeling'>
+         11
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=12 title='1.6.1 XGBOOST Regression Algorithm'>
+         12
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=13 title='1.7 Evaluation'>
+         13
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=14 title='1.7 Evaluation'>
+         14
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=15 title='1.7 Evaluation'>
+         15
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=16 title='NA'>
+         16
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=17 title='2. Extract aspects from review through topic modeling'>
+         17
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=18 title='2.1 Problem Statement'>
+         18
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=19 title='2.2 Solution - Topic Modeling'>
+         19
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=20 title='2.3 Topic Modeling'>
+         20
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=21 title='2.3.1 Text Preprocessing'>
+         21
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=22 title='2.3.3 Topic Model Training'>
+         22
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=23 title='2.3.4 Top 5 Words for 20 Topics'>
+         23
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=24 title='2.3.5 Topic Visualization'>
+         24
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=25 title='2.3.5 Topic Visualization'>
+         25
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=26 title='2.3.5 Topic Visualization'>
+         26
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=27 title='2.3.6 Topic Prediction'>
+         27
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=28 title='2.3.7 Topic Distribution in Overall Reviews'>
+         28
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=29 title='NA'>
+         29
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
