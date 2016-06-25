@@ -73,7 +73,7 @@ style = "border:1px solid rgba(136, 136, 136, 0.46);" />
 </div>
 
 <p style = "clear : both">
-There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 11,12,332 reviews.
+There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 50% of total reviews.
 Figure 1.1 shows star rating distribution in the subset of review dataset.
 </p>
 
@@ -297,7 +297,30 @@ After training several regressors with different parameter settings,the best so 
 
 ---
 
-## 1.7 Evaluation
+## 1.7 Experimental Design
+
+We first performed XGBOOST Classifier on extracted features which took 48 hours for training and giving <b style="color : red"> 62% accuracy </b> on the machine with following configuration.
+<center>
+<table> 
+  <tbody>
+    <tr>
+    <td> RAM </td>
+    <td> 8 GB </td>
+    </tr>
+    <td> Processor </td>
+    <td> Core i5 </td>
+    </tr>
+    <td> OS </td>
+    <td> Windows 7 </td>
+    </tr>
+</table>
+</center>
+Whereas, XGBOOST REgressor took 2-3 hrs for training to give <b style="color : red"> 0.69 R-Squared </b>
+
+---
+
+
+## 1.8 Evaluation
 
 Model is evaluated on our test set containing <b> 3,33,366 reviews </b>
 
@@ -337,7 +360,7 @@ Star rating prediction from our xgboost regression model is rounded off and we c
 
 --- 
 
-## 1.7 Evaluation
+## 1.8 Evaluation
 
 #### Histogram of Error Values
 
@@ -349,7 +372,7 @@ Star rating prediction from our xgboost regression model is rounded off and we c
 
 ---
 
-## 1.7 Evaluation
+## 1.8 Evaluation
 
 #### Comparing Actual Star Rating with Average of Predicted Star Rating
 
