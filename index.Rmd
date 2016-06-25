@@ -73,7 +73,7 @@ style = "border:1px solid rgba(136, 136, 136, 0.46);" />
 </div>
 
 <p style = "clear : both">
-There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 11,12,332 reviews.
+There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 50% of overall reviews.
 Figure 1.1 shows star rating distribution in the subset of review dataset.
 </p>
 
@@ -295,9 +295,37 @@ After training several regressors with different parameter settings,the best so 
 </center>
 <p style="font-size:14px;text-align: center;"> Table 1.6.1 : Parameter details of Best so far Model</p>
 
+
 ---
 
-## 1.7 Evaluation
+## 1.7 Experimental Setup
+
+We first performed classification algorithm on reviews dataset.With following machine configuration,classification algorithm was taking  48 hrs for training and giving <b style = "color: red;"> 62% Accuracy </b>
+where as our final regression model took 3-4 hrs of trainings with  <b style = "color: red;"> 0.69 R-Squared </b>
+
+<center>
+<table style="width:auto">
+  <tbody>
+      <tr>
+        <td> RAM </td>
+        <td> 16 GB </td>
+      </tr>
+       <tr>
+        <td> OS </td>
+        <td> Windows 7 </td>
+      </tr>
+       <tr>
+        <td> Processor </td>
+        <td> Core i5 </td>
+      </tr>
+  </tbody>
+</table>
+</center>
+
+--- 
+
+
+## 1.8 Evaluation
 
 Model is evaluated on our test set containing <b> 3,33,366 reviews </b>
 
@@ -307,7 +335,7 @@ Model is evaluated on our test set containing <b> 3,33,366 reviews </b>
   <th></th>
   <th> MSE </th>
   <th> RMSE </th>
-  <th> R-Score </th>
+  <th> R-Square </th>
 </thead>
 <tbody>
   <tr>
@@ -337,7 +365,7 @@ Star rating prediction from our xgboost regression model is rounded off and we c
 
 --- 
 
-## 1.7 Evaluation
+## 1.8 Evaluation
 
 #### Histogram of Error Values
 
@@ -349,7 +377,7 @@ Star rating prediction from our xgboost regression model is rounded off and we c
 
 ---
 
-## 1.7 Evaluation
+## 1.8 Evaluation
 
 #### Comparing Actual Star Rating with Average of Predicted Star Rating
 
@@ -359,6 +387,7 @@ We then compute average of predicted ratings grouped by their actual star rating
 <img src = 'assets/img/starratingPrediction/actualvspredicted.PNG' />
 </div>
 <p style="font-size:14px;text-align: center;"> Fig 1.8 : Actual vs. Average Predicted Star Ratings</p>
+
 
 
 --- .segue .dark .current

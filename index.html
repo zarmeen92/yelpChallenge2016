@@ -121,7 +121,7 @@ style = "border:1px solid rgba(136, 136, 136, 0.46);" />
 </div>
 
 <p style = "clear : both">
-There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 11,12,332 reviews.
+There were 22,25,213 reviews presented in the dataset.However due to computational limitation we have performed our analysis on 50% of overall reviews.
 Figure 1.1 shows star rating distribution in the subset of review dataset.
 </p>
 
@@ -394,7 +394,40 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
 
 <slide class="" id="slide-13" style="background:;">
   <hgroup>
-    <h2>1.7 Evaluation</h2>
+    <h2>1.7 Experimental Setup</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>We first performed classification algorithm on reviews dataset.With following machine configuration,classification algorithm was taking  48 hrs for training and giving <b style = "color: red;"> 62% Accuracy </b>
+where as our final regression model took 3-4 hrs of trainings with  <b style = "color: red;"> 0.69 R-Squared </b></p>
+
+<p><center></p>
+
+<table style="width:auto">
+  <tbody>
+      <tr>
+        <td> RAM </td>
+        <td> 16 GB </td>
+      </tr>
+       <tr>
+        <td> OS </td>
+        <td> Windows 7 </td>
+      </tr>
+       <tr>
+        <td> Processor </td>
+        <td> Core i5 </td>
+      </tr>
+  </tbody>
+</table>
+
+<p></center></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-14" style="background:;">
+  <hgroup>
+    <h2>1.8 Evaluation</h2>
   </hgroup>
   <article data-timings="">
     <p>Model is evaluated on our test set containing <b> 3,33,366 reviews </b></p>
@@ -406,7 +439,7 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
   <th></th>
   <th> MSE </th>
   <th> RMSE </th>
-  <th> R-Score </th>
+  <th> R-Square </th>
 </thead>
 <tbody>
   <tr>
@@ -440,9 +473,9 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-14" style="background:;">
+<slide class="" id="slide-15" style="background:;">
   <hgroup>
-    <h2>1.7 Evaluation</h2>
+    <h2>1.8 Evaluation</h2>
   </hgroup>
   <article data-timings="">
     <h4>Histogram of Error Values</h4>
@@ -459,9 +492,9 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-15" style="background:;">
+<slide class="" id="slide-16" style="background:;">
   <hgroup>
-    <h2>1.7 Evaluation</h2>
+    <h2>1.8 Evaluation</h2>
   </hgroup>
   <article data-timings="">
     <h4>Comparing Actual Star Rating with Average of Predicted Star Rating</h4>
@@ -478,7 +511,7 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue dark current" id="slide-16" style="background:;">
+<slide class="segue dark current" id="slide-17" style="background:;">
   <article data-timings="">
     <p><hgroup>
   <h2> Topic Extraction From Review </h2>
@@ -488,7 +521,7 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-17" style="background:;">
+<slide class="" id="slide-18" style="background:;">
   <hgroup>
     <h2>2. Extract aspects from review through topic modeling</h2>
   </hgroup>
@@ -504,7 +537,7 @@ Word2vec model was trained on training data i.e 7,78,966 reviews
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-18" style="background:;">
+<slide class="" id="slide-19" style="background:;">
   <hgroup>
     <h2>2.1 Problem Statement</h2>
   </hgroup>
@@ -527,7 +560,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-19" style="background:;">
+<slide class="" id="slide-20" style="background:;">
   <hgroup>
     <h2>2.2 Solution - Topic Modeling</h2>
   </hgroup>
@@ -544,7 +577,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-20" style="background:;">
+<slide class="" id="slide-21" style="background:;">
   <hgroup>
     <h2>2.3 Topic Modeling</h2>
   </hgroup>
@@ -564,7 +597,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-21" style="background:;">
+<slide class="" id="slide-22" style="background:;">
   <hgroup>
     <h2>2.3.1 Text Preprocessing</h2>
   </hgroup>
@@ -603,7 +636,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-22" style="background:;">
+<slide class="" id="slide-23" style="background:;">
   <hgroup>
     <h2>2.3.3 Topic Model Training</h2>
   </hgroup>
@@ -687,7 +720,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-23" style="background:;">
+<slide class="" id="slide-24" style="background:;">
   <hgroup>
     <h2>2.3.4 Top 5 Words for 20 Topics</h2>
   </hgroup>
@@ -702,7 +735,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-24" style="background:;">
+<slide class="" id="slide-25" style="background:;">
   <hgroup>
     <h2>2.3.5 Topic Visualization</h2>
   </hgroup>
@@ -734,7 +767,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-25" style="background:;">
+<slide class="" id="slide-26" style="background:;">
   <hgroup>
     <h2>2.3.5 Topic Visualization</h2>
   </hgroup>
@@ -766,7 +799,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-26" style="background:;">
+<slide class="" id="slide-27" style="background:;">
   <hgroup>
     <h2>2.3.5 Topic Visualization</h2>
   </hgroup>
@@ -798,7 +831,7 @@ Kings Family Restaurant featured a very friendly staff, great prices, and tasty 
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-27" style="background:;">
+<slide class="" id="slide-28" style="background:;">
   <hgroup>
     <h2>2.3.6 Topic Prediction</h2>
   </hgroup>
@@ -817,7 +850,7 @@ After merging clusters with similar words,We then assign topics labels,a meaning
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="" id="slide-28" style="background:;">
+<slide class="" id="slide-29" style="background:;">
   <hgroup>
     <h2>2.3.7 Topic Distribution in Overall Reviews</h2>
   </hgroup>
@@ -834,7 +867,7 @@ After merging clusters with similar words,We then assign topics labels,a meaning
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="segue dark current" id="slide-29" style="background:;">
+<slide class="segue dark current" id="slide-30" style="background:;">
   <article data-timings="">
     <p><hgroup>
   <h2> Thank you </h2>
@@ -922,73 +955,73 @@ After merging clusters with similar words,We then assign topics labels,a meaning
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=13 title='1.7 Evaluation'>
+        data-slide=13 title='1.7 Experimental Setup'>
          13
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=14 title='1.7 Evaluation'>
+        data-slide=14 title='1.8 Evaluation'>
          14
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=15 title='1.7 Evaluation'>
+        data-slide=15 title='1.8 Evaluation'>
          15
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=16 title='NA'>
+        data-slide=16 title='1.8 Evaluation'>
          16
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=17 title='2. Extract aspects from review through topic modeling'>
+        data-slide=17 title='NA'>
          17
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=18 title='2.1 Problem Statement'>
+        data-slide=18 title='2. Extract aspects from review through topic modeling'>
          18
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=19 title='2.2 Solution - Topic Modeling'>
+        data-slide=19 title='2.1 Problem Statement'>
          19
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=20 title='2.3 Topic Modeling'>
+        data-slide=20 title='2.2 Solution - Topic Modeling'>
          20
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=21 title='2.3.1 Text Preprocessing'>
+        data-slide=21 title='2.3 Topic Modeling'>
          21
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=22 title='2.3.3 Topic Model Training'>
+        data-slide=22 title='2.3.1 Text Preprocessing'>
          22
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=23 title='2.3.4 Top 5 Words for 20 Topics'>
+        data-slide=23 title='2.3.3 Topic Model Training'>
          23
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=24 title='2.3.5 Topic Visualization'>
+        data-slide=24 title='2.3.4 Top 5 Words for 20 Topics'>
          24
       </a>
     </li>
@@ -1006,20 +1039,26 @@ After merging clusters with similar words,We then assign topics labels,a meaning
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=27 title='2.3.6 Topic Prediction'>
+        data-slide=27 title='2.3.5 Topic Visualization'>
          27
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=28 title='2.3.7 Topic Distribution in Overall Reviews'>
+        data-slide=28 title='2.3.6 Topic Prediction'>
          28
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=29 title='NA'>
+        data-slide=29 title='2.3.7 Topic Distribution in Overall Reviews'>
          29
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=30 title='NA'>
+         30
       </a>
     </li>
   </ul>
